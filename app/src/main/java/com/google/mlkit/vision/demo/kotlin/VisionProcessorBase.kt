@@ -69,11 +69,14 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
     // To keep the latest images and its metadata.
     @GuardedBy("this")
     private var latestImage: ByteBuffer? = null
+
     @GuardedBy("this")
     private var latestImageMetaData: FrameMetadata? = null
+
     // To keep the images and metadata in process.
     @GuardedBy("this")
     private var processingImage: ByteBuffer? = null
+
     @GuardedBy("this")
     private var processingMetaData: FrameMetadata? = null
 
@@ -87,16 +90,6 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
                 },
                 0,
                 1000
-        )
-    }
-
-    // -----------------Code for processing single still image----------------------------------------
-    override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay) {
-        requestDetectInImage(
-                InputImage.fromBitmap(bitmap!!, 0),
-                graphicOverlay, /* originalCameraImage= */
-                null, /* shouldShowFps= */
-                false
         )
     }
 
@@ -149,26 +142,6 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
                 .addOnSuccessListener(executor) { processLatestImage(graphicOverlay) }
     }
 
-    // -----------------Code for processing live preview frame from CameraX API-----------------------
-    @RequiresApi(VERSION_CODES.KITKAT)
-    @ExperimentalGetImage
-    override fun processImageProxy(image: ImageProxy, graphicOverlay: GraphicOverlay) {
-        if (isShutdown) {
-            return
-        }
-        var bitmap = BitmapUtils.getBitmap(image)
-        requestDetectInImage(
-                InputImage.fromMediaImage(image.image!!, image.imageInfo.rotationDegrees),
-                graphicOverlay, /* originalCameraImage= */
-                bitmap, /* shouldShowFps= */
-                true
-        )
-                // When the image is from CameraX analysis use case, must call image.close() on received
-                // images when finished using them. Otherwise, new images may not be received or the camera
-                // may stall.
-                .addOnCompleteListener { image.close() }
-    }
-
     // -----------------Common processing logic-------------------------------------------------------
     private fun requestDetectInImage(
             image: InputImage,
@@ -219,22 +192,21 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
                     )
             )
             graphicOverlay.postInvalidate()
+        }.addOnFailureListener(executor) { e: Exception ->
+            graphicOverlay.clear()
+            graphicOverlay.postInvalidate()
+            Toast.makeText(
+                    graphicOverlay.context,
+                    "Failed to process.\nError: " +
+                            e.localizedMessage +
+                            "\nCause: " +
+                            e.cause,
+                    Toast.LENGTH_LONG
+            )
+                    .show()
+            e.printStackTrace()
+            this@VisionProcessorBase.onFailure(e)
         }
-                .addOnFailureListener(executor) { e: Exception ->
-                    graphicOverlay.clear()
-                    graphicOverlay.postInvalidate()
-                    Toast.makeText(
-                            graphicOverlay.context,
-                            "Failed to process.\nError: " +
-                                    e.localizedMessage +
-                                    "\nCause: " +
-                                    e.cause,
-                            Toast.LENGTH_LONG
-                    )
-                            .show()
-                    e.printStackTrace()
-                    this@VisionProcessorBase.onFailure(e)
-                }
     }
 
     override fun stop() {
