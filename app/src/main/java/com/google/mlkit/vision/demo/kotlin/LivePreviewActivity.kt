@@ -41,11 +41,6 @@ import com.google.mlkit.vision.demo.CameraSource
 import com.google.mlkit.vision.demo.CameraSourcePreview
 import com.google.mlkit.vision.demo.GraphicOverlay
 import com.google.mlkit.vision.demo.R
-import com.google.mlkit.vision.demo.kotlin.automl.AutoMLImageLabelerProcessor
-import com.google.mlkit.vision.demo.kotlin.barcodescanner.BarcodeScannerProcessor
-import com.google.mlkit.vision.demo.kotlin.facedetector.FaceDetectorProcessor
-import com.google.mlkit.vision.demo.kotlin.labeldetector.LabelDetectorProcessor
-import com.google.mlkit.vision.demo.kotlin.objectdetector.ObjectDetectorProcessor
 import com.google.mlkit.vision.demo.kotlin.textdetector.TextRecognitionProcessor
 import com.google.mlkit.vision.demo.preference.PreferenceUtils
 import com.google.mlkit.vision.demo.preference.SettingsActivity
@@ -66,7 +61,7 @@ class LivePreviewActivity :
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
     private var graphicOverlay: GraphicOverlay? = null
-    private var selectedModel = OBJECT_DETECTION
+    private var selectedModel = TEXT_RECOGNITION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,14 +80,7 @@ class LivePreviewActivity :
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val options: MutableList<String> = ArrayList()
-        options.add(OBJECT_DETECTION)
-        options.add(OBJECT_DETECTION_CUSTOM)
-        options.add(FACE_DETECTION)
         options.add(TEXT_RECOGNITION)
-        options.add(BARCODE_SCANNING)
-        options.add(IMAGE_LABELING)
-        options.add(IMAGE_LABELING_CUSTOM)
-        options.add(AUTOML_LABELING)
 
         // Creating adapter for spinner
         val dataAdapter =
@@ -180,28 +168,6 @@ class LivePreviewActivity :
         }
         try {
             when (model) {
-                OBJECT_DETECTION -> {
-                    Log.i(TAG, "Using Object Detector Processor")
-                    val objectDetectorOptions =
-                            PreferenceUtils.getObjectDetectorOptionsForLivePreview(this)
-                    cameraSource!!.setMachineLearningFrameProcessor(
-                            ObjectDetectorProcessor(this, objectDetectorOptions)
-                    )
-                }
-                OBJECT_DETECTION_CUSTOM -> {
-                    Log.i(
-                            TAG,
-                            "Using Custom Object Detector Processor"
-                    )
-                    val localModel = LocalModel.Builder()
-                            .setAssetFilePath("custom_models/bird_classifier.tflite")
-                            .build()
-                    val customObjectDetectorOptions =
-                            PreferenceUtils.getCustomObjectDetectorOptionsForLivePreview(this, localModel)
-                    cameraSource!!.setMachineLearningFrameProcessor(
-                            ObjectDetectorProcessor(this, customObjectDetectorOptions)
-                    )
-                }
                 TEXT_RECOGNITION -> {
                     Log.i(
                             TAG,
@@ -209,46 +175,6 @@ class LivePreviewActivity :
                     )
                     cameraSource!!.setMachineLearningFrameProcessor(TextRecognitionProcessor(this))
                 }
-                FACE_DETECTION -> {
-                    Log.i(TAG, "Using Face Detector Processor")
-                    val faceDetectorOptions =
-                            PreferenceUtils.getFaceDetectorOptionsForLivePreview(this)
-                    cameraSource!!.setMachineLearningFrameProcessor(
-                            FaceDetectorProcessor(this, faceDetectorOptions)
-                    )
-                }
-                BARCODE_SCANNING -> {
-                    Log.i(TAG, "Using Barcode Detector Processor")
-                    cameraSource!!.setMachineLearningFrameProcessor(
-                            BarcodeScannerProcessor(this)
-                    )
-                }
-                IMAGE_LABELING -> {
-                    Log.i(
-                            TAG,
-                            "Using Image Label Detector Processor"
-                    )
-                    cameraSource!!.setMachineLearningFrameProcessor(
-                            LabelDetectorProcessor(this, ImageLabelerOptions.DEFAULT_OPTIONS)
-                    )
-                }
-                IMAGE_LABELING_CUSTOM -> {
-                    Log.i(
-                            TAG,
-                            "Using Custom Image Label Detector Processor"
-                    )
-                    val localClassifier = LocalModel.Builder()
-                            .setAssetFilePath("custom_models/bird_classifier.tflite")
-                            .build()
-                    val customImageLabelerOptions =
-                            CustomImageLabelerOptions.Builder(localClassifier).build()
-                    cameraSource!!.setMachineLearningFrameProcessor(
-                            LabelDetectorProcessor(this, customImageLabelerOptions)
-                    )
-                }
-                AUTOML_LABELING -> cameraSource!!.setMachineLearningFrameProcessor(
-                        AutoMLImageLabelerProcessor(this)
-                )
                 else -> Log.e(TAG, "Unknown model: $model")
             }
         } catch (e: Exception) {
@@ -356,14 +282,7 @@ class LivePreviewActivity :
     }
 
     companion object {
-        private const val OBJECT_DETECTION = "Object Detection"
-        private const val OBJECT_DETECTION_CUSTOM = "Custom Object Detection (Birds)"
-        private const val FACE_DETECTION = "Face Detection"
         private const val TEXT_RECOGNITION = "Text Recognition"
-        private const val BARCODE_SCANNING = "Barcode Scanning"
-        private const val IMAGE_LABELING = "Image Labeling"
-        private const val IMAGE_LABELING_CUSTOM = "Custom Image Labeling (Birds)"
-        private const val AUTOML_LABELING = "AutoML Image Labeling"
         private const val TAG = "LivePreviewActivity"
         private const val PERMISSION_REQUESTS = 1
         private fun isPermissionGranted(
