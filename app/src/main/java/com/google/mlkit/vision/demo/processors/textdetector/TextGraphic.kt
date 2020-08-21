@@ -53,7 +53,6 @@ class TextGraphic constructor(overlay: GraphicOverlay?, private val text: Text) 
 
     /** Draws the text block annotations for position, size, and raw value on the supplied canvas.  */
     override fun draw(canvas: Canvas) {
-
         if (text.text.isEmpty()){
             return
         }
