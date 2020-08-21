@@ -39,7 +39,7 @@
             android:value="ocr"/>
 
         <activity
-            android:name=".kotlin.LivePreviewActivity"
+            android:name=".processors.LivePreviewActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>

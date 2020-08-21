@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.mlkit.vision.demo.kotlin.textdetector
+package com.google.mlkit.vision.demo.processors.textdetector
 
 import android.graphics.Canvas
 import android.graphics.Color

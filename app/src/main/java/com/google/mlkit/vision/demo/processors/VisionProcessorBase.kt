@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.mlkit.vision.demo.kotlin
+package com.google.mlkit.vision.demo.processors
 
 import android.app.ActivityManager
 import android.content.Context
 import android.graphics.Bitmap
-import android.os.Build.VERSION_CODES
 import android.os.SystemClock
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.GuardedBy
-import androidx.annotation.RequiresApi
-import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageProxy
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.mlkit.vision.common.InputImage

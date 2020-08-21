@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.mlkit.vision.demo.kotlin
+package com.google.mlkit.vision.demo.processors
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -32,7 +32,7 @@ import com.google.mlkit.vision.demo.CameraSource
 import com.google.mlkit.vision.demo.CameraSourcePreview
 import com.google.mlkit.vision.demo.GraphicOverlay
 import com.google.mlkit.vision.demo.R
-import com.google.mlkit.vision.demo.kotlin.textdetector.TextRecognitionProcessor
+import com.google.mlkit.vision.demo.processors.textdetector.TextRecognitionProcessor
 import java.io.IOException
 import java.util.*
 

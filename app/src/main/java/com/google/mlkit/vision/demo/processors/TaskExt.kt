@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.mlkit.vision.demo.kotlin
+package com.google.mlkit.vision.demo.processors
 
 import com.google.android.gms.tasks.*
 import java.util.concurrent.Executor
