@@ -17,38 +17,24 @@
 package com.google.mlkit.vision.demo.kotlin
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.annotation.KeepName
-import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.demo.CameraSource
 import com.google.mlkit.vision.demo.CameraSourcePreview
 import com.google.mlkit.vision.demo.GraphicOverlay
 import com.google.mlkit.vision.demo.R
 import com.google.mlkit.vision.demo.kotlin.textdetector.TextRecognitionProcessor
-import com.google.mlkit.vision.demo.preference.PreferenceUtils
-import com.google.mlkit.vision.demo.preference.SettingsActivity
-import com.google.mlkit.vision.demo.preference.SettingsActivity.LaunchSource
-import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 /** Live preview demo for ML Kit APIs.  */
 @KeepName
@@ -95,13 +81,6 @@ class LivePreviewActivity :
         val facingSwitch = findViewById<ToggleButton>(R.id.facing_switch)
         facingSwitch.setOnCheckedChangeListener(this)
 
-        val settingsButton = findViewById<ImageView>(R.id.settings_button)
-        settingsButton.setOnClickListener { v: View? ->
-            val intent = Intent(applicationContext, SettingsActivity::class.java)
-            intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.LIVE_PREVIEW)
-            startActivity(intent)
-        }
-
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
         } else {
@@ -112,16 +91,6 @@ class LivePreviewActivity :
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.live_preview_menu, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.settings) {
-            val intent = Intent(this, SettingsActivity::class.java)
-            intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.LIVE_PREVIEW)
-            startActivity(intent)
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     @Synchronized

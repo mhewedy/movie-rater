@@ -33,7 +33,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.demo.R
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Demo app chooser which takes care of runtime permission requesting and allow you pick from all

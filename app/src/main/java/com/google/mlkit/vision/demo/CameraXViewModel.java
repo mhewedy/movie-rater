@@ -17,16 +17,14 @@
 package com.google.mlkit.vision.demo;
 
 import android.app.Application;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
-import android.util.Log;
-
-import androidx.camera.lifecycle.ProcessCameraProvider;
 
 import com.google.common.util.concurrent.ListenableFuture;
 

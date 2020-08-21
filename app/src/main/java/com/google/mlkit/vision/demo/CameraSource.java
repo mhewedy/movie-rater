@@ -20,10 +20,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -33,7 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 
 import com.google.android.gms.common.images.Size;
-import com.google.mlkit.vision.demo.preference.PreferenceUtils;
+import com.google.common.base.Preconditions;
 
 import java.io.IOException;
 import java.lang.Thread.State;
@@ -283,7 +285,7 @@ public class CameraSource {
         }
         Camera camera = Camera.open(requestedCameraId);
 
-        SizePair sizePair = PreferenceUtils.getCameraPreviewSizePair(activity, requestedCameraId);
+        SizePair sizePair = getCameraPreviewSizePair(activity, requestedCameraId);
         if (sizePair == null) {
             sizePair =
                     selectSizePair(
@@ -749,5 +751,29 @@ public class CameraSource {
      */
     private void cleanScreen() {
         graphicOverlay.clear();
+    }
+
+    public static SizePair getCameraPreviewSizePair(Context context, int cameraId) {
+        Preconditions.checkArgument(
+                cameraId == CameraSource.CAMERA_FACING_BACK
+                        || cameraId == CameraSource.CAMERA_FACING_FRONT);
+        String previewSizePrefKey;
+        String pictureSizePrefKey;
+        if (cameraId == CameraSource.CAMERA_FACING_BACK) {
+            previewSizePrefKey = context.getString(R.string.pref_key_rear_camera_preview_size);
+            pictureSizePrefKey = context.getString(R.string.pref_key_rear_camera_picture_size);
+        } else {
+            previewSizePrefKey = context.getString(R.string.pref_key_front_camera_preview_size);
+            pictureSizePrefKey = context.getString(R.string.pref_key_front_camera_picture_size);
+        }
+
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            return new SizePair(
+                    Size.parseSize(sharedPreferences.getString(previewSizePrefKey, null)),
+                    Size.parseSize(sharedPreferences.getString(pictureSizePrefKey, null)));
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -24,7 +24,7 @@ import android.util.Log
 import com.google.mlkit.vision.demo.GraphicOverlay
 import com.google.mlkit.vision.demo.GraphicOverlay.Graphic
 import com.google.mlkit.vision.text.Text
-import java.util.Arrays
+import java.util.*
 
 /**
  * Graphic instance for rendering TextBlock position, size, and ID within an associated graphic

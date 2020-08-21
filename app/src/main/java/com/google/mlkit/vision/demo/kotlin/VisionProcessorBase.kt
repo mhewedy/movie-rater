@@ -30,17 +30,9 @@ import androidx.camera.core.ImageProxy
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskExecutors
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.demo.BitmapUtils
-import com.google.mlkit.vision.demo.CameraImageGraphic
-import com.google.mlkit.vision.demo.FrameMetadata
-import com.google.mlkit.vision.demo.GraphicOverlay
-import com.google.mlkit.vision.demo.InferenceInfoGraphic
-import com.google.mlkit.vision.demo.ScopedExecutor
-import com.google.mlkit.vision.demo.VisionImageProcessor
-import com.google.mlkit.vision.demo.preference.PreferenceUtils
+import com.google.mlkit.vision.demo.*
 import java.nio.ByteBuffer
-import java.util.Timer
-import java.util.TimerTask
+import java.util.*
 
 /**
  * Abstract base class for ML Kit frame processors. Subclasses need to implement {@link
@@ -141,8 +133,7 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
         // If live viewport is on (that is the underneath surface view takes care of the camera preview
         // drawing), skip the unnecessary bitmap creation that used for the manual preview drawing.
         val bitmap =
-                if (PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) null
-                else BitmapUtils.getBitmap(data, frameMetadata)
+                BitmapUtils.getBitmap(data, frameMetadata)
         requestDetectInImage(
                 InputImage.fromByteBuffer(
                         data,
@@ -165,10 +156,7 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
         if (isShutdown) {
             return
         }
-        var bitmap: Bitmap? = null
-        if (!PreferenceUtils.isCameraLiveViewportEnabled(graphicOverlay.context)) {
-            bitmap = BitmapUtils.getBitmap(image)
-        }
+        var bitmap = BitmapUtils.getBitmap(image)
         requestDetectInImage(
                 InputImage.fromMediaImage(image.image!!, image.imageInfo.rotationDegrees),
                 graphicOverlay, /* originalCameraImage= */
