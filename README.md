@@ -7,7 +7,7 @@ google search to query for movie IMDB rating
 ## Steps:
  
 1. First Point the Device Camera toward Netflix (or any other movie app/website), then when you find the movie
-name is captured, click on "SHOW SELECTED TEXT". You can use the `+` and `-` buttons to zoom in and out:
+name is captured, click on `SHOW SELECTED TEXT`. You can use the `+` and `-` buttons to zoom in and out:
 
 <img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/1.jpg"  width="200px"/>
 
