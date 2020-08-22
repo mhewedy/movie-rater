@@ -6,7 +6,7 @@ google search to query for movie IMDB rating
 
 ## First Point the Device Camera toward Netflix (or any other movie app/website)
 
-<img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/1.jpg" alt="drawing" style="width:200px;"/>
+<img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/1.jpg" alt="drawing" style="width:100px;"/>
 
 
 Based on code from: https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart 
