@@ -21,9 +21,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.View
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -46,6 +44,7 @@ class LivePreviewActivity :
     private var preview: CameraSourcePreview? = null
     private var graphicOverlay: GraphicOverlay? = null
     private var selectedModel = TEXT_RECOGNITION
+    private var textRecognitionProcessor: TextRecognitionProcessor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,9 +63,8 @@ class LivePreviewActivity :
 
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            Toast.makeText(baseContext, "TEST TEST", Toast.LENGTH_LONG).show()
+            Toast.makeText(baseContext, textRecognitionProcessor?.recognizedText?.text, Toast.LENGTH_LONG).show()
         }
-
 
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
@@ -88,11 +86,9 @@ class LivePreviewActivity :
         try {
             when (model) {
                 TEXT_RECOGNITION -> {
-                    Log.i(
-                            TAG,
-                            "Using on-device Text recognition Processor"
-                    )
-                    cameraSource!!.setMachineLearningFrameProcessor(TextRecognitionProcessor(this))
+                    Log.i(TAG, "Using on-device Text recognition Processor")
+                    textRecognitionProcessor = TextRecognitionProcessor(this)
+                    cameraSource!!.setMachineLearningFrameProcessor(textRecognitionProcessor)
                 }
                 else -> Log.e(TAG, "Unknown model: $model")
             }

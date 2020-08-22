@@ -30,6 +30,9 @@ import com.google.mlkit.vision.text.TextRecognizer
 class TextRecognitionProcessor(context: Context) : VisionProcessorBase<Text>(context) {
     private val textRecognizer: TextRecognizer = TextRecognition.getClient()
 
+    var recognizedText: Text? = null
+        private set
+
     override fun stop() {
         super.stop()
         textRecognizer.close()
@@ -41,6 +44,7 @@ class TextRecognitionProcessor(context: Context) : VisionProcessorBase<Text>(con
 
     override fun onSuccess(text: Text, graphicOverlay: GraphicOverlay) {
         Log.d(TAG, "On-device Text detection successful")
+        this.recognizedText = text
         logExtrasForTesting(text)
         graphicOverlay.add(TextGraphic(graphicOverlay, text))
     }
