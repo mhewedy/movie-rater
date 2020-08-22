@@ -67,7 +67,7 @@ class LivePreviewActivity :
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
 
-            if (textRecognitionProcessor?.recognizedText?.text?.length == 0){
+            if (textRecognitionProcessor?.recognizedText?.text?.length == 0) {
                 Toast.makeText(this, "No text selected.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
