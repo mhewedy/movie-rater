@@ -6,15 +6,16 @@ google search to query for movie IMDB rating
 
 ## Steps:
  
-1. First Point the Device Camera toward Netflix (or any other movie app/website):
+1. First Point the Device Camera toward Netflix (or any other movie app/website), then when you find the movie
+name is captured, click on "SHOW SELECTED TEXT". You can use the `+` and `-` buttons to zoom in and out:
 
 <img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/1.jpg"  width="200px"/>
 
-1. Click on the button "SHOW SELECTED TEXT", to open a list of selected text, then click on the text match or near the movie name:
+2. A List of all selected text will open, Now click on the text match the movie name:
 
 <img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/2.jpg"  width="200px"/>
 
-3. You will go to google searching for IMDB rating:
+3. Once Text clicked, the browser window will open for you with searching for an IMDB rating for your selected text:
 <img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/3.jpg"  width="200px"/> 
 
 
