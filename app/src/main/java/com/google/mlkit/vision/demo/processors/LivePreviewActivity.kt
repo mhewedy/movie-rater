@@ -34,7 +34,6 @@ import java.io.IOException
 import java.util.*
 
 
-/** Live preview demo for ML Kit APIs.  */
 @KeepName
 class LivePreviewActivity :
         AppCompatActivity(),
@@ -43,7 +42,6 @@ class LivePreviewActivity :
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
     private var graphicOverlay: GraphicOverlay? = null
-    private var selectedModel = TEXT_RECOGNITION
     private var textRecognitionProcessor: TextRecognitionProcessor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +59,13 @@ class LivePreviewActivity :
             Log.d(TAG, "graphicOverlay is null")
         }
 
+        if (allPermissionsGranted()) {
+            createCameraSource()
+        } else {
+            runtimePermissions
+        }
+
+        // handlers
         findViewById<Button>(R.id.button).setOnClickListener {
             if (textRecognitionProcessor?.recognizedText?.text?.length == 0) {
                 Toast.makeText(this, "No text selected.", Toast.LENGTH_LONG).show()
@@ -71,20 +76,16 @@ class LivePreviewActivity :
             startActivity(intent)
         }
 
-        findViewById<Button>(R.id.zoomin).setOnClickListener {
-            if (cameraSource?.camera != null)
-                changeZoom(cameraSource?.camera!!, +10)
-        }
+        findViewById<Button>(R.id.zoomin).setOnClickListener { zoom(10) }
+        findViewById<Button>(R.id.zoomout).setOnClickListener { zoom(-10) }
+    }
 
-        findViewById<Button>(R.id.zoomout).setOnClickListener {
-            if (cameraSource?.camera != null)
-                changeZoom(cameraSource?.camera!!, -10)
-        }
-
-        if (allPermissionsGranted()) {
-            createCameraSource(selectedModel)
-        } else {
-            runtimePermissions
+    private fun zoom(v: Int) {
+        if (cameraSource?.camera != null) {
+            if (!changeZoom(cameraSource?.camera!!, v)) {
+                Toast.makeText(applicationContext,
+                        "Zoom is not supported on this device", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -93,22 +94,18 @@ class LivePreviewActivity :
         return true
     }
 
-    private fun createCameraSource(model: String) {
+    private fun createCameraSource() {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
             cameraSource = CameraSource(this, graphicOverlay)
         }
         try {
-            when (model) {
-                TEXT_RECOGNITION -> {
-                    Log.i(TAG, "Using on-device Text recognition Processor")
-                    textRecognitionProcessor = TextRecognitionProcessor(this)
-                    cameraSource!!.setMachineLearningFrameProcessor(textRecognitionProcessor)
-                }
-                else -> Log.e(TAG, "Unknown model: $model")
-            }
+            Log.i(TAG, "Using on-device Text recognition Processor")
+            textRecognitionProcessor = TextRecognitionProcessor(this)
+            cameraSource?.setMachineLearningFrameProcessor(textRecognitionProcessor)
+
         } catch (e: Exception) {
-            Log.e(TAG, "Can not create image processor: $model", e)
+            Log.e(TAG, "Can not create image processor: text recognition", e)
             Toast.makeText(
                     applicationContext, "Can not create image processor: " + e.message,
                     Toast.LENGTH_LONG
@@ -130,7 +127,7 @@ class LivePreviewActivity :
                 if (graphicOverlay == null) {
                     Log.d(TAG, "resume: graphOverlay is null")
                 }
-                preview!!.start(cameraSource, graphicOverlay)
+                preview?.start(cameraSource, graphicOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
                 cameraSource!!.release()
@@ -142,7 +139,7 @@ class LivePreviewActivity :
     public override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume")
-        createCameraSource(selectedModel)
+        createCameraSource()
         startCameraSource()
     }
 
@@ -206,7 +203,7 @@ class LivePreviewActivity :
     ) {
         Log.i(TAG, "Permission granted!")
         if (allPermissionsGranted()) {
-            createCameraSource(selectedModel)
+            createCameraSource()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
