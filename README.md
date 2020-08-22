@@ -19,6 +19,13 @@ name is captured, click on `SHOW SELECTED TEXT`. You can use the `+` and `-` but
 <img src="https://raw.githubusercontent.com/mhewedy/movie-rater/master/etc/3.jpg"  width="200px"/> 
 
 
+## Download apk:
+
+To download a debug apk version, go to **[Actions](https://github.com/mhewedy/movie-rater/actions)**, 
+then open the latest successful run, then click the **movie-rater** link under the **Artifacts** section.
+
+> Note, this is a debug version, so you will need to trust unknown sources first.  
+
 Have fun!
 
 Based on code from: https://github.com/googlesamples/mlkit/tree/master/android/vision-quickstart 
