@@ -17,11 +17,13 @@
 package com.google.mlkit.vision.demo.processors
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.widget.*
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +35,7 @@ import com.google.mlkit.vision.demo.R
 import com.google.mlkit.vision.demo.processors.textdetector.TextRecognitionProcessor
 import java.io.IOException
 import java.util.*
+
 
 /** Live preview demo for ML Kit APIs.  */
 @KeepName
@@ -63,7 +66,15 @@ class LivePreviewActivity :
 
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            Toast.makeText(baseContext, textRecognitionProcessor?.recognizedText?.text, Toast.LENGTH_LONG).show()
+
+            if (textRecognitionProcessor?.recognizedText?.text?.length == 0){
+                Toast.makeText(this, "No text selected.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(baseContext, ExtractedTextActivity::class.java)
+            intent.putExtra("TEXT_LINES", textRecognitionProcessor?.recognizedText?.text)
+            startActivity(intent)
         }
 
         if (allPermissionsGranted()) {

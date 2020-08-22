@@ -180,13 +180,6 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
                 )
             }
             this@VisionProcessorBase.onSuccess(results, graphicOverlay)
-            graphicOverlay.add(
-                    InferenceInfoGraphic(
-                            graphicOverlay,
-                            currentLatencyMs.toDouble(),
-                            if (shouldShowFps) framesPerSecond else null
-                    )
-            )
             graphicOverlay.postInvalidate()
         }.addOnFailureListener(executor) { e: Exception ->
             graphicOverlay.clear()
