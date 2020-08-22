@@ -25,6 +25,15 @@
   </com.google.mlkit.vision.demo.CameraSourcePreview>
 
   <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true">
+
+  </LinearLayout>
+
+  <LinearLayout
       android:id="@+id/control"
       android:layout_width="match_parent"
       android:layout_height="60dp"
@@ -37,9 +46,25 @@
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:layout_height="wrap_content"
         android:text="@string/show_selected_text"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/zoomin"
+        android:text="@string/zoomin"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/zoomout"
+        android:text="@string/zoomout"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
   </LinearLayout>

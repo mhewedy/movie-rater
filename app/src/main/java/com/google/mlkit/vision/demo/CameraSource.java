@@ -45,6 +45,8 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.mlkit.vision.demo.CameraUtilsKt.changeZoom;
+
 /**
  * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or
  * displaying extra information). This receives preview frames from the camera at a specified rate,
@@ -140,6 +142,11 @@ public class CameraSource {
     // Public
     // ==============================================================================================
 
+
+    public Camera getCamera() {
+        return camera;
+    }
+
     /**
      * Stops the camera and releases the resources of the camera and underlying detector.
      */
@@ -172,6 +179,7 @@ public class CameraSource {
         camera.setPreviewTexture(dummySurfaceTexture);
         usingSurfaceTexture = true;
         camera.startPreview();
+        changeZoom(camera, +30);
 
         processingThread = new Thread(processingRunnable);
         processingRunnable.setActive(true);

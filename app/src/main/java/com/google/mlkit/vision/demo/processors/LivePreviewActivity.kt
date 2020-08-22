@@ -28,10 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.annotation.KeepName
-import com.google.mlkit.vision.demo.CameraSource
-import com.google.mlkit.vision.demo.CameraSourcePreview
-import com.google.mlkit.vision.demo.GraphicOverlay
-import com.google.mlkit.vision.demo.R
+import com.google.mlkit.vision.demo.*
 import com.google.mlkit.vision.demo.processors.textdetector.TextRecognitionProcessor
 import java.io.IOException
 import java.util.*
@@ -64,17 +61,24 @@ class LivePreviewActivity :
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener {
-
+        findViewById<Button>(R.id.button).setOnClickListener {
             if (textRecognitionProcessor?.recognizedText?.text?.length == 0) {
                 Toast.makeText(this, "No text selected.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-
             val intent = Intent(baseContext, ExtractedTextActivity::class.java)
             intent.putExtra("TEXT_LINES", textRecognitionProcessor?.recognizedText?.text)
             startActivity(intent)
+        }
+
+        findViewById<Button>(R.id.zoomin).setOnClickListener {
+            if (cameraSource?.camera != null)
+                changeZoom(cameraSource?.camera!!, +10)
+        }
+
+        findViewById<Button>(R.id.zoomout).setOnClickListener {
+            if (cameraSource?.camera != null)
+                changeZoom(cameraSource?.camera!!, -10)
         }
 
         if (allPermissionsGranted()) {
