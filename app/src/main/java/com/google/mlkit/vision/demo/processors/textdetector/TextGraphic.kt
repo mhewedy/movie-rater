@@ -56,7 +56,6 @@ class TextGraphic constructor(overlay: GraphicOverlay?, private val text: Text) 
         if (text.text.isEmpty()){
             return
         }
-
         Log.d(TAG, "Text is: " + text.text)
         for (textBlock in text.textBlocks) { // Renders the text at the bottom of the box.
             Log.d(TAG, "TextBlock text is: " + textBlock.text)
@@ -69,6 +68,9 @@ class TextGraphic constructor(overlay: GraphicOverlay?, private val text: Text) 
                     "TextBlock cornerpoint is: " + Arrays.toString(textBlock.cornerPoints)
             )
             for (line in textBlock.lines) {
+
+                Log.d("TextGraphicLine", line.text)
+
                 Log.d(TAG, "Line text is: " + line.text)
                 Log.d(
                         TAG,

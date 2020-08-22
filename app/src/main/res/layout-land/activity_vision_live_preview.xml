@@ -27,21 +27,13 @@
       android:layout_alignParentTop="true"
       android:background="#000" >
 
-      <Spinner
-          android:id="@+id/spinner"
-          android:layout_width="match_parent"
+      <Button
+          android:id="@+id/button"
+          android:layout_width="0dp"
+          android:layout_weight="1"
           android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal" />
-
-      <ToggleButton
-          android:id="@+id/facing_switch"
-          android:layout_width="48dp"
-          android:layout_height="48dp"
-          android:layout_gravity="bottom|start"
-          android:background="@layout/toggle_style"
-          android:textOff=""
-          android:textOn=""
-          android:checked="false" />
+          android:text="@string/show_selected_text"
+          android:layout_gravity="center"/>
 
   </FrameLayout>
 

@@ -43,21 +43,12 @@
       android:background="#000"
       android:orientation="horizontal">
 
-    <ToggleButton
-        android:id="@+id/facing_switch"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_vertical"
-        android:background="@layout/toggle_style"
-        android:checked="false"
-        android:textOff=""
-        android:textOn=""/>
-
-    <Spinner
-        android:id="@+id/spinner"
+    <Button
+        android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:text="@string/show_selected_text"
         android:layout_gravity="center"/>
 
   </LinearLayout>

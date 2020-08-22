@@ -40,9 +40,7 @@ import java.util.*
 @KeepName
 class LivePreviewActivity :
         AppCompatActivity(),
-        ActivityCompat.OnRequestPermissionsResultCallback,
-        OnItemSelectedListener,
-        CompoundButton.OnCheckedChangeListener {
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private var cameraSource: CameraSource? = null
     private var preview: CameraSourcePreview? = null
@@ -64,22 +62,11 @@ class LivePreviewActivity :
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val spinner = findViewById<Spinner>(R.id.spinner)
-        val options: MutableList<String> = ArrayList()
-        options.add(TEXT_RECOGNITION)
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener {
+            Toast.makeText(baseContext, "TEST TEST", Toast.LENGTH_LONG).show()
+        }
 
-        // Creating adapter for spinner
-        val dataAdapter =
-                ArrayAdapter(this, R.layout.spinner_style, options)
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // attaching data adapter to spinner
-        spinner.adapter = dataAdapter
-        spinner.onItemSelectedListener = this
-
-        val facingSwitch = findViewById<ToggleButton>(R.id.facing_switch)
-        facingSwitch.setOnCheckedChangeListener(this)
 
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
@@ -91,43 +78,6 @@ class LivePreviewActivity :
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.live_preview_menu, menu)
         return true
-    }
-
-    @Synchronized
-    override fun onItemSelected(
-            parent: AdapterView<*>?,
-            view: View?,
-            pos: Int,
-            id: Long
-    ) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        selectedModel = parent?.getItemAtPosition(pos).toString()
-        Log.d(TAG, "Selected model: $selectedModel")
-        preview?.stop()
-        if (allPermissionsGranted()) {
-            createCameraSource(selectedModel)
-            startCameraSource()
-        } else {
-            runtimePermissions
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        // Do nothing.
-    }
-
-    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        Log.d(TAG, "Set facing")
-        if (cameraSource != null) {
-            if (isChecked) {
-                cameraSource?.setFacing(CameraSource.CAMERA_FACING_FRONT)
-            } else {
-                cameraSource?.setFacing(CameraSource.CAMERA_FACING_BACK)
-            }
-        }
-        preview?.stop()
-        startCameraSource()
     }
 
     private fun createCameraSource(model: String) {
